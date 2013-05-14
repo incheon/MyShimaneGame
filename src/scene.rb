@@ -9,7 +9,7 @@ class Scene
     @@scenes[name.to_sym] = obj
   end
 
-  def self.set_scene(scene_name)
+  def self.set_scene(scene_name)    
     @@current_scene_name = scene_name.to_sym
   end
 

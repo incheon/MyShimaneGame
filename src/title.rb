@@ -11,8 +11,7 @@ class Title
   
   def update
     #擬似ポインタをクリック先に移動
-    @pt.x = Input.mousePosX
-    @pt.y = Input.mousePosY
+    @pt.x, @pt.y= Input.mousePosX, Input.mousePosY
   end
   
   def play
@@ -29,17 +28,10 @@ class Title
     
     #マウスクリックイベント
     if Input.mouseDown?(M_LBUTTON) then
-      Scene.set_scene(:chugoku) unless @pt.check(@img_start).empty?#スタート
-      Scene.set_scene(:level) unless @pt.check(@img_level).empty?#レベル選択
-      Scene.set_finish(true) unless @pt.check(@img_end).empty?#終了
-      
-      #[!]試験的に玉を呼び出しています
-      #      @bullet = Bullet.new(Window.width/2, Window.height)
+      Scene.set_scene(:chugoku) unless @pt.check(@img_start).empty? #スタート
+      Scene.set_scene(:level) unless @pt.check(@img_level).empty? #レベル選択
+      Scene.set_finish(true) unless @pt.check(@img_end).empty? #終了
 		end
     
-    #[!]試験的に玉を描画しています
-    #    Sprite.draw(@bullet)
-    #    Sprite.update(@bullet)
-    #    Sprite.clean(@bullet)
   end
 end

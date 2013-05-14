@@ -32,11 +32,10 @@ class Bullet < Sprite
   def update
     
     #玉のスピード
-    speed_x = 20
-    speed_y = 20
+    speed_x, speed_y = 20, 20
     
     #玉の位置更新
-    hyp = Math.hypot((self.mouse_x - self.img_base_x), (self.mouse_y - self.img_base_y))
+    hyp = Math.hypot((self.mouse_x - self.startX), (self.mouse_y - self.startY))
     self.x += speed_x * ((@mouse_x-@startX)/hyp)
     self.y += speed_y * ((@mouse_y-@startY)/hyp)
     #本当は画面外に出たら消したいが、これをやると初めから消えてしまう
@@ -53,11 +52,12 @@ class Bullet < Sprite
   #玉が画面外（+-100px）に出たかどうかの判定
   def has_out
     
-    flag = false
-    flag = true if ((self.x<@limitLeft) || (@limitRight<self.x+self.image.width))
-    flag = true if ((self.y<@limitAbove)||(@limitBelow<self.y+self.image.height))
+    return !(p(@limitLeft .. @limitRight-self.image.width).include?(self.x) && 
+        p(@limitAbove .. @limitBelow-self.image.height).include?(self.y))
+    #flag = true if ((self.x<@limitLeft) || (@limitRight<self.x+self.image.width))
+    #flag = true if ((self.y<@limitAbove) || (@limitBelow<self.y+self.image.height))
     
-    return flag
+    #return flag
   end
   
   #玉が画面外（+-100px）に出たかどうかの値
