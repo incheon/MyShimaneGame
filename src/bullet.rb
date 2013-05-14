@@ -3,40 +3,29 @@
 
 class Bullet < Sprite
   
-  attr_accessor :img_base_x
-  attr_accessor :img_base_y
-  attr_accessor :base_x
-  attr_accessor :base_y
-  attr_accessor :base_r
-  attr_accessor :bd_up
-  attr_accessor :bd_down
-  attr_accessor :bd_left
-  attr_accessor :bd_right
-  attr_accessor :mouse_x
-  attr_accessor :mouse_y
+  #アクセス範囲
+  attr_accessor :startY, :startX
+  attr_accessor :drawX, :drawY, :drawR
+  attr_accessor :limitAbove, :limitBelow, :limitLeft, :limitRight
+  attr_accessor :mouse_x, :mouse_y
   
   #デフォルトコンストラクタ
-  def initialize(x = 0.0, y = 0.0, up = 0.0, down = 100.0, left =  0.0, right = 100.0, ai = false)
+  def initialize(x = 0.0, y = 0.0, up = 0.0, down = 100.0,
+      left =  0.0, right = 100.0, isplayer = false)
     
-    #表示開始地点
-    @img_base_x, @img_base_y= x, y
-    
-    #サイズ（縦、横、直径）
-    size = 20 #大元のサイズ
-    @base_x, @base_y, @base_r = size/2, size/2, size/2
-    super(@img_base_x,@img_base_y, Image.new(@img_base_x,@img_base_y).circleFill(@base_x, @base_y, @base_r, [0,0,0]))
-    
-    #玉の有効範囲の境界線を保存
-    @bd_up, @bd_down, @bd_left,@bd_right = up, down, left, right
+    @startX, @startY= x, y #表示開始地点
+    @limitAbove, @limitBelow, @limitLeft, @limitRight = up, down, left, right #玉の有効範囲の境界線を保存
     
     #マウス座標の保存
-    if not ai then
-      p "player"
-      @mouse_x, @mouse_y = Input.mousePosX, Input.mousePosY
-    else
-      p "ai"
-      @mouse_x, @mouse_y = rand(right - left) + left, rand(down - up) + up
-    end
+    @mouse_x, @mouse_y = Input.mousePosX, Input.mousePosY if isplayer
+    @mouse_x, @mouse_y = rand(right - left) + left, rand(down - up) + up if not isplayer
+    
+    #弾のサイズ（縦、横、直径）
+    size = 20
+    @drawX, @drawY, @drawR = size/2, size/2, size/2
+    
+    #弾を描画
+    super(@startX,@startY, Image.new(@startX,@startY).circleFill(@drawX, @drawY, @drawR, [0,0,0]))
   end
   
   #アップデート
@@ -48,8 +37,8 @@ class Bullet < Sprite
     
     #玉の位置更新
     hyp = Math.hypot((self.mouse_x - self.img_base_x), (self.mouse_y - self.img_base_y))
-    self.x += speed_x * ((@mouse_x-@img_base_x)/hyp)
-    self.y += speed_y * ((@mouse_y-@img_base_y)/hyp)
+    self.x += speed_x * ((@mouse_x-@startX)/hyp)
+    self.y += speed_y * ((@mouse_y-@startY)/hyp)
     #本当は画面外に出たら消したいが、これをやると初めから消えてしまう
     #    @vanished = true if has_out
 
@@ -65,8 +54,8 @@ class Bullet < Sprite
   def has_out
     
     flag = false
-    flag = true if ((self.x<@bd_left) || (@bd_right<self.x+self.image.width))
-    flag = true if ((self.y<@bd_up)||(@bd_down<self.y+self.image.height))
+    flag = true if ((self.x<@limitLeft) || (@limitRight<self.x+self.image.width))
+    flag = true if ((self.y<@limitAbove)||(@limitBelow<self.y+self.image.height))
     
     return flag
   end
