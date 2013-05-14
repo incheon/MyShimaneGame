@@ -8,7 +8,6 @@ class Bullet < Sprite
   attr_accessor :base_x
   attr_accessor :base_y
   attr_accessor :base_r
-  
   attr_accessor :bd_up
   attr_accessor :bd_down
   attr_accessor :bd_left
