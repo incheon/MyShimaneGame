@@ -1,0 +1,71 @@
+# coding: Shift_JIS
+
+#市民を表すクラス
+class Citizen < Sprite
+  
+  #クラス変数群
+#  @@img = Image.load(File.expand_path("../../image/citizen.png", __FILE__))#バックグラウンド画像
+#  @@py = 456#固定
+
+#  @@pos[0, 0, 0, 0]
+
+  #######  Window.draw( 31,456,@citizen)
+  #######  Window.draw(255,456,@citizen)
+  #######  Window.draw(456,456,@citizen)
+  #######  Window.draw(680,456,@citizen)
+
+  #ここでの特性は基本全て読み取り専用
+  #継承先で可変して出力する
+  # attr_reader :travering
+  
+  
+  
+  #インスタンス変数群
+    @travering = false
+    @isItemTrue = false # 要求したアイテムが正しいか。　（正しくなかったら隣の県にいってしまう？？
+    @px = 100
+    @witch = false # false => leftWindow : true = > RightWindow
+
+  #デフォルトコンストラクタ
+	def initialize(x, witch) #
+		self.image = Image.load(File.expand_path("../../image/citizen.png", __FILE__))#バックグラウンド画像
+
+		@travering = false
+		@isItemTrue = false
+		@px = x
+		@py = 456
+		@witch = witch # left
+		self.x = @px
+		self.y = @py
+
+        #self.draw(@px,@@py,@@img.setColorKey([255,255,255]))#citizenの画像を読んで透過処理＋背後と合成
+    # @x_speed = 1#@@default_y_speed 
+    # @x_direction = 1#@@default_x_speed
+	end
+
+	def update
+		self.draw
+#		if @isItemTrue
+        if true
+			move
+		end
+		@vanished = true if self.y >= Window.height - 325
+	end
+
+	def move
+		if @witch == true # trueなら、現在位置が左のウィンドウ
+			self.x += 5 # 右のウィンドウへ移動する.-----------------------5はスピードのこと。
+		else self.x -= 5 # 左のウィンドウに移動する.
+		end
+	end
+
+	def getItem
+
+
+	end
+
+	def vanished?
+		return @vanished
+	end
+
+end
