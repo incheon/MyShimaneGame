@@ -1,28 +1,28 @@
 # coding: Shift_JIS
 
-#市民を表すクラス
+# Citizenは一般市民を表すクラス
 class Citizen < Sprite
   
   #インスタンス変数群
-  @travering = false
-  @isItemTrue = false # 要求したアイテムが正しいか。　（正しくなかったら隣の県にいってしまう？？
-  @px = 100
-  @witch = false # false => leftWindow : true = > RightWindow
+  @travering = false # 移動中の判定
+  @isItemTrue = false # 要求アイテムの判定（正しくなかったら隣の県にいってしまう？？
+  @px = 100 # 初期位置
+  @appearRight = false # falseで左（自分側）に、trueで右（敵側）に現れる
   
+  #アクセス
   attr_accessor :requirement
   attr_accessor :isItemTrue
   
   #デフォルトコンストラクタ
-	def initialize(x, witch) 
+	def initialize(x, which) 
 		self.image = Image.load(File.expand_path("../../image/citizen.png", __FILE__))#本体の画像
 		@travering = false
 		@isItemTrue = false
 		@px = x
 		@py = 456
-		@witch = witch # left
+		@appearRight = which # left
 		self.x = @px
 		self.y = @py
-    
     @requirement = getitemrandom #要求アイテムの設定
     
 	end
@@ -37,7 +37,7 @@ class Citizen < Sprite
 
 	def move
     speed = 5 #スピード
-		if @witch then # 左のウィンドウへ移動する
+		if @appearRight then # 左のウィンドウへ移動する
       self.x += -speed
 		else
       self.x += speed # 右のウィンドウに移動する
